@@ -48,10 +48,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     }](input_data)?;
     let elapsed = now.elapsed()?.as_micros();
     println!("Finished computing. Answer: {answer}");
-    println!("Execution took: {elapsed} us");
-
-    // TODO: Uncomment once response parsing is fixed
-    // server_io::upload_answer(day, first, answer).await?;
+    println!("Execution took: {elapsed} µs");
 
     Ok(())
 }
