@@ -8,3 +8,4 @@ async-std = "1.13.0"
 reqwest = { version = "0.12.8", features = ["json"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 regex = "1.11.1"
+itertools = "0.13.0"
