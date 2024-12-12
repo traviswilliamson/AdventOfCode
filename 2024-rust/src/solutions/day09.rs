@@ -1,4 +1,4 @@
-use std::error::Error;
+use std::{cmp::Reverse, collections::BinaryHeap, error::Error};
 
 const SUM_UP_TO_N: [usize; 10] = [0, 0, 1, 3, 6, 10, 15, 21, 28, 36];
 
@@ -44,6 +44,29 @@ pub fn first(_input: String) -> Result<String, Box<dyn Error>> {
     Ok(checksum.to_string())
 }
 
+struct Block {size: usize, disk_index: usize}
 pub fn second(_input: String) -> Result<String, Box<dyn Error>> {
-    return Err(Box::<dyn Error>::from("Not implemented!"));
+    let mut disk: Vec<Block> = _input.trim().bytes().map(|b| Block {size: (b - b'0') as usize, disk_index: 0}).collect();
+    for i in 1..disk.len() {
+        disk[i].disk_index = disk[i-1].size + disk[i-1].disk_index;
+    }
+    let mut empty_spots: Vec<BinaryHeap<_>> = (0..10).map(|_| BinaryHeap::with_capacity(100)).collect();
+    disk.iter().skip(1).step_by(2).for_each(|block| {
+        empty_spots[block.size].push(Reverse(block.disk_index));
+    });
+
+    let mut checksum = 0;
+    // Compute checksum, working through files
+    // disk.iter().rev().skip((disk.len() + 1) % 2).step_by(2).for_each(| block| {
+    //     // Find earliest space where the file will fit
+    //     let (empty_spot_size, move_to_index) = empty_spots[block.size..10].iter().enumerate().map(|(i, h)| (i, h.peek())).filter(|(i, disk_index)| disk_index.is_some()).min_by_key(|s| s.1.unwrap());
+
+    //     // If that's earlier than the file's position, move
+
+    //     // Compute checksum, given the file's location
+    //     checksum += (block.disk_index / 2) * (block.size * block.into() + SUM_UP_TO_N[block.size]);
+
+    // });
+
+    Ok(checksum.to_string())
 }
