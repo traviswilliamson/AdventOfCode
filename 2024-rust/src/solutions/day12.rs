@@ -1,16 +1,16 @@
-use std::{borrow::Borrow, cell::RefCell, error::Error, rc::Rc};
+use std::{borrow::Borrow, cell::RefCell, collections::HashSet, error::Error, rc::Rc};
 
 struct Region {
-    area: u16,
-    perimeter: u16
+    area: u32,
+    perimeter: u32,
 }
 
 pub fn first(_input: String) -> Result<String, Box<dyn Error>> {
-    let mut garden: Vec<Vec<(u8, Option<Rc<RefCell<Region>>>)>> = _input.split_terminator("\n")
+    let mut garden: Vec<Vec<(u8, usize)>> = _input.split_terminator("\n")
         .map(|line| {
-            line.bytes().map(|b| (b, None)).collect::<Vec<(u8, Option<Rc<RefCell<Region>>>)>>()
+            line.bytes().map(|b| (b, 0)).collect::<Vec<(u8, usize)>>()
         }).collect();
-    let mut regions: Vec<Rc<RefCell<Region>>> = Vec::new();
+    let mut regions: Vec<Region> = Vec::new();
     for i in 0..garden.len() {
         let on_top = i == 0;
         let on_bottom = i == garden.len() - 1;
@@ -19,40 +19,51 @@ pub fn first(_input: String) -> Result<String, Box<dyn Error>> {
             let on_right = j == garden[i].len() - 1;
             let plant = garden[i][j].0;
             if !on_top && garden[i - 1][j].0 == plant {
-                garden[i][j].1 = Some(garden[i - 1][j].1.as_ref().unwrap().clone());
+                garden[i][j].1 = garden[i - 1][j].1;
+                if !on_left && garden[i][j - 1].0 == plant && garden[i][j - 1].1 != garden[i][j].1 {
+                    // Merge regions
+                    regions[garden[i][j].1].area += regions[garden[i][j - 1].1].area;
+                    regions[garden[i][j].1].perimeter += regions[garden[i][j - 1].1].perimeter;
+                    regions[garden[i][j - 1].1].area = 0;
+                    regions[garden[i][j - 1].1].perimeter = 0;
+                    for ii in 0..(i+1) {
+                        for jj in 0..garden[ii].len() {
+                            if garden[ii][jj].1 == garden[i][j - 1].1 {
+                                garden[ii][jj].1 = garden[i][j].1;
+                            }
+                        }
+                    }
+                }
             }
             else if !on_left && garden[i][j - 1].0 == plant {
-                garden[i][j].1 = Some(garden[i][j - 1].1.as_ref().unwrap().clone());
+                garden[i][j].1 = garden[i][j - 1].1;
             }
             else {
-                garden[i][j].1 = Some(Rc::new(RefCell::new(Region {
+                regions.push(Region {
                     area: 0,
                     perimeter: 0
-                })));
-                regions.push(garden[i][j].1.as_ref().unwrap().clone());
+                });
+                garden[i][j].1 = regions.len() - 1;
 
             }
-            let mut region = garden[i][j].1.as_ref().unwrap().borrow_mut();
-            region.area += 1;
+            regions[garden[i][j].1].area += 1;
             if on_top || garden[i - 1][j].0 != plant {
-                region.perimeter += 1;
+                regions[garden[i][j].1].perimeter += 1;
             }
             if on_bottom || garden[i + 1][j].0 != plant {
-                region.perimeter += 1;
+                regions[garden[i][j].1].perimeter += 1;
             }
             if on_left || garden[i][j - 1].0 != plant {
-                region.perimeter += 1;
+                regions[garden[i][j].1].perimeter += 1;
             }
             if on_right || garden[i][j + 1].0 != plant {
-                region.perimeter += 1;
+                regions[garden[i][j].1].perimeter += 1;
             }
         }
     }
     Ok(regions.iter().map(|r| {
-        let r: &RefCell<Region> = r.borrow();
-        println!("{:?} {:?}", r.borrow().area, r.borrow().perimeter);
-        r.borrow().area * r.borrow().perimeter
-    }).sum::<u16>().to_string())
+        r.area * r.perimeter
+    }).sum::<u32>().to_string())
 }
 
 pub fn second(_input: String) -> Result<String, Box<dyn Error>> {
