@@ -1,4 +1,4 @@
-use std::{cmp::Reverse, collections::{BinaryHeap, HashSet, VecDeque}, error::Error};
+use std::{cmp::Reverse, collections::{BinaryHeap, HashSet}, error::Error};
 
 const OPEN: char = '.';
 const WALL: char = '#';
