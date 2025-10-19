@@ -3,9 +3,14 @@ defmodule Main do
 
   def start(_type, _args) do
     {day, type} = File.read!("input/day.txt")
-    |> Integer.parse
-    ServerIO.download_input_file(day)
-    # TODO: Run code for the day
+    |> String.trim
+    |> String.split_at(2)
+
+    day
+    |> String.to_integer
+    |> ServerIO.download_input_file
+
+    apply(String.to_atom("Elixir.Solutions.Day#{day}"), String.to_atom("part_#{type}"), [])
 
     # Normally a supervision tree. We're just exiting.
     Task.start(fn -> IO.puts IO.ANSI.cyan() <> "Done!" end)
