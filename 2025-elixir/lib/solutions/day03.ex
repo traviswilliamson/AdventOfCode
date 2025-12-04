@@ -14,7 +14,22 @@ defmodule Solutions.Day03 do
     |> IO.puts
   end
 
+  def max_builder(intlist, 0), do: Enum.max(intlist)
+  def max_builder(intlist, count) do
+    {digit, index} = intlist
+    |> Stream.with_index
+    |> Enum.slice(0..-(count+1)//1)
+    |> Enum.max_by(&elem(&1, 0))
+    (digit * (10 ** count)) + max_builder(Enum.slice(intlist, (index+1)..-1//1), count - 1)
+  end
+
   def part_b do
-    IO.puts IO.ANSI.yellow <> "Not implemented" <> IO.ANSI.reset
+    File.stream!("input/3.txt")
+    |> Stream.map(&String.trim/1)
+    |> Stream.map(&String.codepoints/1)
+    |> Stream.map(fn chars -> Enum.map(chars, &String.to_integer/1) end)
+    |> Stream.map(&max_builder(&1, 11))
+    |> Enum.sum
+    |> IO.puts
   end
 end
