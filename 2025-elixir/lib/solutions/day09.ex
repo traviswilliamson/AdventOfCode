@@ -17,8 +17,10 @@ defmodule Solutions.Day09 do
   end
 
   def intersecting?({{box_a_x, box_a_y}, {box_b_x, box_b_y}}, [{edge_a_x, edge_a_y}, {edge_b_x, edge_b_y}]) do
-    # TODO
-    rem(box_b_y, 2) == 0
+    !(max(box_a_x, box_b_x) <= min(edge_a_x, edge_b_x) ||
+    min(box_a_x, box_b_x) >= max(edge_a_x, edge_b_x) ||
+    max(box_a_y, box_b_y) <= min(edge_a_y, edge_b_y) ||
+    min(box_a_y, box_b_y) >= max(edge_a_y, edge_b_y))
   end
 
   def part_b do
@@ -32,7 +34,8 @@ defmodule Solutions.Day09 do
       {j, j_k} <- points |> Enum.with_index,
       i_k < j_k, do: {i, j}) # Unique pairs
     |> Stream.filter(fn pair ->
-      !(edges |> Enum.any?(&(intersecting?(pair, &1))))
+      !(edges
+      |> Enum.any?(&(intersecting?(pair, &1))))
     end)
     |> Stream.map(&area/1)
     |> Enum.max
