@@ -16,7 +16,26 @@ defmodule Solutions.Day09 do
     |> IO.puts
   end
 
+  def intersecting?({{box_a_x, box_a_y}, {box_b_x, box_b_y}}, [{edge_a_x, edge_a_y}, {edge_b_x, edge_b_y}]) do
+    # TODO
+    rem(box_b_y, 2) == 0
+  end
+
   def part_b do
-    IO.puts IO.ANSI.yellow <> "Not implemented" <> IO.ANSI.reset
+    points = for line <- File.stream!("input/9.txt"),
+      [x, y] = line |> String.trim |> String.split(","),
+      do: {String.to_integer(x), String.to_integer(y)}
+
+    edges = points |> Enum.chunk_every(2, 1, [Enum.at(points, 0)])
+
+    (for {i, i_k} <- points |> Enum.with_index,
+      {j, j_k} <- points |> Enum.with_index,
+      i_k < j_k, do: {i, j}) # Unique pairs
+    |> Stream.filter(fn pair ->
+      !(edges |> Enum.any?(&(intersecting?(pair, &1))))
+    end)
+    |> Stream.map(&area/1)
+    |> Enum.max
+    |> IO.puts
   end
 end
