@@ -36,22 +36,60 @@ defmodule Solutions.Day10 do
     |> IO.puts
   end
 
-  def min_power_buttons(machine) do
-    # Linear algebra time
-    tensors = for tensor_i <- 0..((machine.jolts |> Enum.count) - 1),
-      freqs = machine.buttons |> Enum.map(&Enum.frequencies/1),
-      do: freqs |> Enum.map(&(Map.get(&1, tensor_i, 0)))
-    Nx.LinAlg.least_squares(tensors |> Nx.tensor, machine.jolts |> Map.values |> Nx.tensor)
-    |> Nx.to_flat_list |> Enum.sum |> IO.inspect
+  def min_joltage(counts) do
+    cond do
+      counts |> Enum.all?(fn {_, v} -> v == 0 end) -> 0 # We're done!
+      counts |> Enum.any?(fn {_, v} -> v < 0 end) -> :infinity # However we got here wasn't valid
+      true ->
+        case Process.get(counts) do
+          :infinity -> :infinity # No solutions down this path
+          cached_count when is_number(cached_count) -> cached_count
+          nil ->
+            # In the end, we'll need combos that can get us this odd number
+            arity = 0..(Process.get(:num_machines) - 1)
+            |> Enum.map(fn i -> {i, Bitwise.band(Map.get(counts, i), 1) == 1} end)
+
+            solution = case Process.get(arity) do
+              nil ->
+                # At most 1-each button presses that can get us that
+                satisfying_combos = Process.get(:all_combos) |> Enum.filter(&(activate_satisfy(&1, arity)))
+                Process.put(arity, satisfying_combos) # Keep these cached, we'll see them a lot
+                satisfying_combos
+              list when is_list(list) -> list
+            end |> case do
+              [] -> :infinity # Couldn't solve this one
+              valid_combos ->
+                # Recursion time!
+                valid_combos |> Stream.map(fn combo ->
+                  combo_counts = combo |> List.flatten |> Enum.frequencies
+                  # Now that we've got even remainig joltage to get, halve the problem and do it again
+                  counts |> Stream.map(fn {k, v} ->
+                    {k, div((v - Map.get(combo_counts, k, 0)), 2)} end)
+                    |> Enum.into(%{})
+                  |> min_joltage |> case do
+                    :infinity -> :infinity # Bad solution
+                    valid -> valid * 2 + Enum.count(combo)
+                  end
+                end) |> Enum.min
+            end
+            Process.put(counts, solution) # Remember what we found
+            solution
+        end
+    end
+  end
+
+  def handle_line(machine) do
+    Process.put(:num_machines, machine.goal |> Enum.count)
+    all_combos = 0..Enum.count(machine.buttons) |> Enum.flat_map(&comb(&1, machine.buttons))
+    Process.put(:all_combos, all_combos)
+    min_joltage(machine.jolts)
   end
 
   def part_b do
     File.stream!("input/10.txt")
     |> Stream.map(&parse/1)
-    |> Stream.map(&min_power_buttons/1)
-    |> Enum.sum
+    |> Task.async_stream(&handle_line/1, timeout: 20000)
+    |> Enum.sum_by(fn {:ok, res} -> res end)
     |> IO.puts
   end
 end
-
-# 16931 too high

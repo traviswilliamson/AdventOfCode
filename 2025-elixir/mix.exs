@@ -23,7 +23,6 @@ defmodule AdventOfCode.MixProject do
   defp deps do
     [
       {:req, "~> 0.5.15"},
-      {:nx, "~> 0.9"},
     ]
   end
 end
