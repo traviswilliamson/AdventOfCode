@@ -1,0 +1,16 @@
+[
+  {
+    "label": "Debug build",
+    "command": "clang++",
+    "args": ["-g", "main.cpp", "-std=c++23", "-o", "x64/debug/main.exe"],
+  },
+  {
+    "label": "Release build",
+    "command": "clang++",
+    "args": ["-o3", "-DNDEBUG", "-std=c++23", "main.cpp", "-o", "x64/release/main.exe"],
+  },
+  {
+    "label": "Run Release version",
+    "command": "x64/release/main.exe",
+  }
+]

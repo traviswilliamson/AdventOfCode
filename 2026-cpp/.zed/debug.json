@@ -1,0 +1,10 @@
+[
+  {
+    "adapter": "CodeLLDB",
+    "label": "Debug Main",
+    "request": "launch",
+    "program": "x64/debug/main.exe",
+    "stopOnEntry": false,
+    "cwd": "$ZED_WORKTREE_ROOT"
+  }
+]
