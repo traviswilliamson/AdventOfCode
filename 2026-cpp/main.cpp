@@ -21,5 +21,4 @@ int main() {
             std::cout << "Dir:  " << entry.path().filename() << "\n";
         }
     }
-
 }

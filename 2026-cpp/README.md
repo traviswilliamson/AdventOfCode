@@ -1,0 +1,25 @@
+# 2025 Advent Of Code - Elixir
+Directory for Travis Williamson's 2024 [c++23](https://cppreference.com/cpp/23) solutions for [Advent of Code](https://adventofcode.com/).
+
+Projects at work won't be upgrading to this version for a while, and I wanted to play with the new features.
+
+## Installation
+1. Install [clang](https://github.com/llvm/llvm-project/releases)
+1. Add clang to path, restart shell
+1. (Optional) For communication to Advent of Code servers, create a `Cookie.txt` file in the `input` folder and add your own cookie that gets created when logging into the Advent of Code website. While on the Advent of Code website, if you open the Network tab in your browser's Dev Tools, you'll see the cookie in the header of API calls that are made while navigating the site. This typically expires after a month so you'll need to update it each year.
+
+## Running
+1. Set the current day in a `day.txt` file in the `input` folder in the format `ddf`, where `dd` is the 2 digit day, and `f` is `"a"` or `"b"`, whether this is for the first or second part. Example: `05b`
+1. Build and run
+    1. In zed, use the relevant run tasks
+    1. Or `clang++ -o3 -DNDEBUG -std=c++23 main.cpp -o bin/release/main.exe`, then run it `bin/release/main.exe`
+
+## Debugging
+1. CodeLLDB debugging is set up as a zed debug task
+
+## TODO
+1. Fetch input data from Advent of Code
+    1. Remember to add user agent to web request header, `"Travis Williamson: https://github.com/traviswilliamson/AdventOfCode"`
+1. Setup timing
+    1. Check for debug mode, show warning
+1. Console helper messages

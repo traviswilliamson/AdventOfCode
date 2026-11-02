@@ -17,6 +17,3 @@ Setting this up as a full Elixir application was overkill; scripts would have wo
 ## Debugging
 1. To run interactively, call `iex -S mix`
 1. Now call the relevant function
-
-## TODO
-1. Add user agent to web request header
