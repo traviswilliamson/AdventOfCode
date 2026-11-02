@@ -13,7 +13,7 @@ namespace fs = std::filesystem;
 
 int main() {
     std::cout << "Alright alright alright, here we go" << std::endl;
-    std::cout << red << "red" << green << "green" << yellow << "yellow" << blue << "blue" << magenta << "magenta" << cyan << "cyan" << reset << "done" << std::endl;
+    std::cout << red << "red " << green << "green " << yellow << "yellow " << blue << "blue " << magenta << "magenta " << cyan << "cyan " << reset << "done " << std::endl;
     for (const auto& entry : fs::directory_iterator(".")) {
         if (fs::is_regular_file(entry.status())) {
             std::cout << "File: " << entry.path().filename() << "\n";

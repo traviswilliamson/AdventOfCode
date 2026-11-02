@@ -3,8 +3,20 @@
     "adapter": "CodeLLDB",
     "label": "Debug Main",
     "request": "launch",
-    "program": "x64/debug/main.exe",
+    "program": "bin/debug/main.exe",
     "stopOnEntry": false,
     "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "adapter": "CodeLLDB",
+    "label": "Build & Debug Main",
+    "request": "launch",
+    "program": "bin/debug/main.exe",
+    "stopOnEntry": false,
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "build": {
+      "command": "clang++",
+      "args": ["-g", "main.cpp", "-std=c++23", "-o", "bin/debug/main.exe"]
+    }
   }
 ]
