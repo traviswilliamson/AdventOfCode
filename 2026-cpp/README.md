@@ -1,5 +1,5 @@
-# 2025 Advent Of Code - Elixir
-Directory for Travis Williamson's 2024 [c++23](https://cppreference.com/cpp/23) solutions for [Advent of Code](https://adventofcode.com/).
+# 2026 Advent Of Code - C++
+Directory for Travis Williamson's 2026 [c++23](https://cppreference.com/cpp/23) solutions for [Advent of Code](https://adventofcode.com/).
 
 Projects at work won't be upgrading to this version for a while, and I wanted to play with the new features.
 
