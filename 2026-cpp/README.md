@@ -4,8 +4,11 @@ Directory for Travis Williamson's 2026 [c++23](https://cppreference.com/cpp/23) 
 Projects at work won't be upgrading to this version for a while, and I wanted to play with the new features.
 
 ## Installation
-1. Install [clang](https://github.com/llvm/llvm-project/releases)
-1. Add clang to path, restart shell
+1. Install [clang](https://github.com/llvm/llvm-project/releases) & add to path
+1. Install [cmake](https://cmake.org/download/)
+1. Install & setup [vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-bash#1---set-up-vcpkg)
+1. Install [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages)
+1. `cmake --preset=vcpkg`
 1. (Optional) For communication to Advent of Code servers, create a `Cookie.txt` file in the `input` folder and add your own cookie that gets created when logging into the Advent of Code website. While on the Advent of Code website, if you open the Network tab in your browser's Dev Tools, you'll see the cookie in the header of API calls that are made while navigating the site. This typically expires after a month so you'll need to update it each year.
 
 ## Running

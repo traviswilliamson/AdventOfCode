@@ -1,3 +1,6 @@
 *.exe
 *.pdb
 input/
+CMakeUserPresets.json
+build/
+CMakeCache.txt
