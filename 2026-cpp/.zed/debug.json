@@ -3,7 +3,7 @@
     "adapter": "CodeLLDB",
     "label": "Debug Main",
     "request": "launch",
-    "program": "bin/debug/main.exe",
+    "program": "build/debug/AdventOfCode.exe",
     "stopOnEntry": false,
     "cwd": "$ZED_WORKTREE_ROOT"
   },
@@ -11,12 +11,12 @@
     "adapter": "CodeLLDB",
     "label": "Build & Debug Main",
     "request": "launch",
-    "program": "bin/debug/main.exe",
+    "program": "build/debug/AdventOfCode.exe",
     "stopOnEntry": false,
     "cwd": "$ZED_WORKTREE_ROOT",
     "build": {
-      "command": "clang++",
-      "args": ["-g", "main.cpp", "-std=c++23", "-o", "bin/debug/main.exe"]
+      "command": "cmake",
+      "args": ["--build", "--preset", "debug"]
     }
   }
 ]

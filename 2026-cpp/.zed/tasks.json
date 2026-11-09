@@ -1,20 +1,20 @@
 [
   {
     "label": "Debug build",
-    "command": "clang++",
-    "args": ["-g", "main.cpp", "-std=c++23", "-o", "bin/debug/main.exe"],
+    "command": "cmake",
+    "args": ["--build", "--preset", "debug"]
   },
   {
     "label": "Release build",
-    "command": "clang++",
-    "args": ["-o3", "-DNDEBUG", "-std=c++23", "main.cpp", "-o", "bin/release/main.exe"],
+    "command": "cmake",
+    "args": ["--build", "--preset", "release"]
   },
   {
     "label": "Run Release version",
-    "command": "x64/release/main.exe",
+    "command": "build/release/AdventOfCode.exe"
   },
   {
     "label": "Build & Run Release version",
-    "command": "clang++ -o3 -DNDEBUG -std=c++23 main.cpp -o bin/release/main.exe; bin/release/main.exe",
-  }
+    "command": "cmake --build --preset release; build/release/AdventOfCode.exe"
+  },
 ]
