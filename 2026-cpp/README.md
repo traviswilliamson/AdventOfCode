@@ -22,8 +22,4 @@ Projects at work won't be upgrading to this version for a while, and I wanted to
 1. CodeLLDB debugging is set up as a zed debug task
 
 ## TODO
-1. Clean up communication w/ Advent of code
-1. Setup timing
-    1. Check for debug mode, show warning
-1. Console helper messages
 1. Run logic based on day
